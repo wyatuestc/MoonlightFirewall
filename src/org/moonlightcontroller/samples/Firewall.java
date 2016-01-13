@@ -140,8 +140,10 @@ public class Firewall extends BoxApplication{
 			int lastOutPort = i;
 			int j = 0;
 			boolean stop = false;
+			boolean exists;
 			for (Action action : r.getActions()) {
 				IProcessingBlock block;
+				exists = false;
 				String suffix = String.format("_Firewall_Rule_%d_UID_%d", i, j);
 				if (action instanceof ActionAlert) {
 					block = new Alert("Alert" + suffix, ((ActionAlert)action).getMessage());
@@ -149,6 +151,7 @@ public class Firewall extends BoxApplication{
 					ActionOutput act = (ActionOutput)action;
 					if (toDeviceBlocks.containsKey(act.getInterface())) {
 						block = toDeviceBlocks.get(act.getInterface());
+						exists = true;
 					} else {
 						ToDevice newBlock = new ToDevice("ToDevice" + suffix, ((ActionOutput)action).getInterface());
 						block = newBlock;
@@ -163,7 +166,8 @@ public class Firewall extends BoxApplication{
 					LOG.severe("Unknown action: " + action.getType());
 					continue;
 				}
-				blocks.add(block);
+				if (!exists)
+					blocks.add(block);
 				connectors.add(new Connector.Builder().setSourceBlock(last).setSourceOutputPort(lastOutPort).setDestBlock(block).build());
 				last = block;
 				lastOutPort = 0;
