@@ -4555,5 +4555,5 @@
 { "match": { "eth_type": "ipv4", "ip_proto": "tcp", "ipv4_src": "140.94.194.0", "ipv4_src_mask": "255.255.255.0", "ipv4_dst": "52.116.175.112", "ipv4_dst_mask": "255.255.255.240" }, "actions": [ { "type": "output", "interface": "em2" } ] },
 { "match": { "eth_type": "ipv4", "ip_proto": "tcp", "ipv4_src": "141.233.32.0", "ipv4_src_mask": "255.255.224.0", "ipv4_dst": "52.116.175.112", "ipv4_dst_mask": "255.255.255.240" }, "actions": [ { "type": "output", "interface": "em2" } ] },
 { "match": { "eth_type": "ipv4", "ip_proto": "tcp", "ipv4_src": "138.101.0.0", "ipv4_src_mask": "255.255.0.0", "ipv4_dst": "52.116.175.112", "ipv4_dst_mask": "255.255.255.240" }, "actions": [ { "type": "output", "interface": "em2" } ] },
-{ "match": { "eth_type": "ipv4", "ip_proto": "tcp", "ipv4_src": "128.14.242.0", "ipv4_src_mask": "255.255.255.0", "ipv4_dst": "52.116.175.112", "ipv4_dst_mask": "255.255.255.240" }, "actions": [ { "type": "output", "interface": "em2" } ] },
+{ "match": { "eth_type": "ipv4", "ip_proto": "tcp", "ipv4_src": "128.14.242.0", "ipv4_src_mask": "255.255.255.0", "ipv4_dst": "52.116.175.112", "ipv4_dst_mask": "255.255.255.240" }, "actions": [ { "type": "output", "interface": "em2" } ] }
 ] }
