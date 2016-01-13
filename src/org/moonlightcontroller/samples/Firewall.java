@@ -5,7 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -123,6 +125,9 @@ public class Firewall extends BoxApplication{
 		HeaderClassifier classify = new HeaderClassifier("HeaderClassifier_Snort", headerRules, Priority.HIGH);
 		blocks.add(classify);
 		
+		Discard discard = new Discard("Discard_Firewall");
+		Map<String, ToDevice> toDeviceBlocks = new HashMap<>();
+		
 		int i = 0;
 		for (Rule r : rules) {
 			headerRules.add(new HeaderClassifierRule.Builder()
@@ -141,9 +146,16 @@ public class Firewall extends BoxApplication{
 				if (action instanceof ActionAlert) {
 					block = new Alert("Alert" + suffix, ((ActionAlert)action).getMessage());
 				} else if (action instanceof ActionOutput) {
-					block = new ToDevice("ToDevice" + suffix, ((ActionOutput)action).getInterface());
+					ActionOutput act = (ActionOutput)action;
+					if (toDeviceBlocks.containsKey(act.getInterface())) {
+						block = toDeviceBlocks.get(act.getInterface());
+					} else {
+						ToDevice newBlock = new ToDevice("ToDevice" + suffix, ((ActionOutput)action).getInterface());
+						block = newBlock;
+						toDeviceBlocks.put(act.getInterface(), newBlock);
+					}
 				} else if (action instanceof ActionDrop) {
-					block = new Discard("Discard" + suffix);
+					block = discard;
 					stop = true;
 				} else if (action instanceof ActionLog) {
 					block = new Log("Log" + suffix, ((ActionLog)action).getMessage());
