@@ -116,7 +116,7 @@ public class Firewall extends BoxApplication{
 		try {
 			rules = new RuleParser(props.getProperty(PROP_RULE_FILE)).read();
 		} catch (Exception e) {
-			LOG.severe("Failed to parse rule file");
+			LOG.severe("Failed to parse rule file: " + e.getMessage() + "\n" + e.getStackTrace());
 			return ImmutableList.of();
 		}
 

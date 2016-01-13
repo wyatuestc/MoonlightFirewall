@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.moonlightcontroller.samples.actions.Action;
 import org.moonlightcontroller.samples.actions.ActionAlert;
 import org.moonlightcontroller.samples.actions.ActionDrop;
@@ -75,6 +76,15 @@ public class RuleParser {
 		try {
 			reader = new BufferedReader(new FileReader(path));
 			return readRulesFromFile(reader);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (JSONParseException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
 		} finally {
 			if (reader != null) {
 				reader.close();
@@ -90,7 +100,7 @@ public class RuleParser {
 		List<Rule> result = new ArrayList<>();
 		while (iter.hasNext()) {
 			Map<String,?> jrule = (Map<String,?>)iter.next();
-			Map<String,?> jHeaderMatch = (Map<String,?>)jrule.get("header_match");
+			Map<String,?> jHeaderMatch = (Map<String,?>)jrule.get("match");
 			HeaderMatch headerMatch = jsonToHeaderMatch(jHeaderMatch);
 			//Map<String,?> jPayloadMatch = (Map<String,?>)jrule.get("payload_match");
 			//PayloadMatch payloadMatch = jsonToPayloadMatch(jPayloadMatch);
@@ -224,6 +234,9 @@ public class RuleParser {
 	private HeaderMatch jsonToHeaderMatch(Map<String,?> json) throws JSONParseException {
 		HeaderMatch.Builder builder = new OpenBoxHeaderMatch.Builder();
 		for (Entry<String, ?> entry : json.entrySet()) {
+			if (entry.getKey().endsWith("_mask"))
+				continue;
+			
 			HeaderField<?> field = HEADER_MATCH_TRANSLATION.get(entry.getKey());
 			if (field == null) {
 				throw new JSONParseException("Unknown header match field: " + entry.getKey());
