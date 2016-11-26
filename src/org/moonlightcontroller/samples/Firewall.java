@@ -39,8 +39,9 @@ import org.moonlightcontroller.samples.actions.ActionOutput;
 import org.openboxprotocol.protocol.IStatement;
 import org.openboxprotocol.protocol.Priority;
 import org.openboxprotocol.protocol.Statement;
-import org.openboxprotocol.protocol.topology.IApplicationTopology;
-import org.openboxprotocol.protocol.topology.TopologyManager;
+import org.moonlightcontroller.topology.IApplicationTopology;
+import org.moonlightcontroller.topology.TopologyManager;
+
 
 import com.google.common.collect.ImmutableList;
 
@@ -122,7 +123,7 @@ public class Firewall extends BoxApplication{
 			return ImmutableList.of();
 		}
 
-		HeaderClassifier classify = new HeaderClassifier("HeaderClassifier_Snort", headerRules, Priority.HIGH);
+		HeaderClassifier classify = new HeaderClassifier("HeaderClassifier_Snort", headerRules, Priority.HIGH, true);
 		blocks.add(classify);
 		
 		Discard discard = new Discard("Discard_Firewall");
