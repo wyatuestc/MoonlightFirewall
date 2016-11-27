@@ -13,7 +13,7 @@ javac -d classes -classpath $MOONLIGHT_PATH:lib/guava-18.0.jar:lib/json-simple-1
 javac -d classes -classpath $MOONLIGHT_PATH:lib/guava-18.0.jar:lib/json-simple-1.1.1.jar:classes/ src/org/moonlightcontroller/samples/*.java 
 cd classes
 
-jar cvmf ../src/META-INF/services/org.moonlightcontroller.bal.BoxApplication $JAR_NAME * ../lib
+jar cvmf ../src/META-INF/services/org.moonlightcontroller.bal.BoxApplication $JAR_NAME * ../lib ../META-INF/services/org.moonlightcontroller.bal.BoxApplication
 mv $JAR_NAME ..
 cd ..
 rm -rf classes
